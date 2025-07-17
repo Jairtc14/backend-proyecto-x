@@ -140,7 +140,17 @@ app.get("/progreso", async (req, res) => {
   }
 });
 
-
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en el puerto ${PORT}`);
+});
+
+app.get("/consultar-por-correo/:correo", async (req, res) => {
+  const correo = req.params.correo;
+
+  try {
+    const pedidos = await db.collection("pedidos").find({ correo }).toArray();
+    res.json(pedidos);
+  } catch (error) {
+    res.status(500).json({ error: "Error al consultar" });
+  }
 });
